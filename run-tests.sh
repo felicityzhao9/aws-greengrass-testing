@@ -84,7 +84,6 @@ main() {
 
     # Run setup_and_cleanup for each test function
     for test_func in "${test_functions[@]}"; do
-        test_func="test_Security_6_T7" ##Need to change
         echo "=============================================="
         echo "Starting test suite for: $test_func"
         echo "=============================================="
@@ -93,7 +92,6 @@ main() {
             overall_status=1
             break
         fi
-        break
     done
     
     if [ $overall_status -eq 0 ]; then
