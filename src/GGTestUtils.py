@@ -29,6 +29,7 @@ class ComponentDeploymentInfo(NamedTuple):
 class GGTestUtils:
     _account: str
     _region: str
+    _randomId: str
     _bucket: str
     _cli_bin_path: str
     _ggClient: GreengrassV2Client
@@ -47,6 +48,7 @@ class GGTestUtils:
         self._ggClient = boto3.client("greengrassv2", region_name=self._region)
         self._iotClient = boto3.client("iot", region_name=self._region)
         self._s3Client = boto3.client("s3", region_name=self._region)
+        self._randomId = str(uuid1().hex)
         self._ggComponentToDeleteArn = []
         self._ggServiceList = []
         self._ggDeploymentToThingNameList = []
@@ -306,9 +308,10 @@ class GGTestUtils:
         """
 
         for file_path in files:
-            object_name = os.path.join(S3_ARTIFACT_DIR,
-                                       os.path.basename(file_path))
-
+            file_name = os.path.basename(file_path)
+            object_name = os.path.join(S3_ARTIFACT_DIR, self._randomId, file_name)
+            print(f"file path: {file_path}")
+            print(f"object name: {object_name}")
             try:
                 # Upload the file
                 self._s3Client.upload_file(file_path, bucket_name, object_name)
@@ -325,13 +328,12 @@ class GGTestUtils:
                                 recipe_files: List[os.PathLike | str]) -> str:
         recipe_name = ""
         recipe_content = ""
-        cloud_addition = str(uuid1())
 
         if len(recipe_files) < 1:
             return None
 
         cloud_recipe_name = os.path.basename(
-            recipe_files[0]).split('-')[0] + cloud_addition
+            recipe_files[0]).split('-')[0] + self._randomId
 
         for recipe_path in recipe_files:
             # Read and modify the file
@@ -339,11 +341,12 @@ class GGTestUtils:
                 recipe_content = f.read()
                 recipe_name: str = yaml.safe_load(
                     recipe_content)["ComponentName"]
-
                 modified_content = recipe_content.replace(
                     "$bucketName$", self.s3_artifact_bucket)
                 modified_content = modified_content.replace(
                     "$testArtifactsDirectory$", S3_ARTIFACT_DIR)
+                modified_content = modified_content.replace(
+                    "$randomId$", self._randomId)
 
                 modified_content = modified_content.replace(
                     recipe_name, cloud_recipe_name)
@@ -663,9 +666,8 @@ class GGTestUtils:
 
     def upload_component_from_recipe(
             self, recipe: dict) -> Optional[ComponentDeploymentInfo]:
-        cloud_addition = str(uuid1())
         recipe_name = recipe["ComponentName"]
-        cloud_recipe_name = recipe_name + cloud_addition
+        cloud_recipe_name = recipe_name + self._randomId
         recipe["ComponentName"] = cloud_recipe_name
 
         try:

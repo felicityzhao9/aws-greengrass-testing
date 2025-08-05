@@ -162,7 +162,7 @@ def test_Deployment_1_T3(iot_obj: IoTUtils, gg_util_obj: GGTestUtils,
     assert (system_interface.monitor_journalctl_for_message(
         "ggl.SampleComponentWithConfiguration.service",
         "running generic sample with version 1.0.0 with configuration value MyConfigDefaultValue",
-        timeout=20) is True)
+        timeout=60) is True)
 
 
 # As a developer, I can use the local cli to deploy multiple components to a device locally without

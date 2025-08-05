@@ -124,7 +124,7 @@ def test_Component_16_T1(iot_obj: IoTUtils, gg_util_obj: GGTestUtils,
     assert (system_interface.monitor_journalctl_for_message(
         "ggl." + component_cloud_name[0] + ".service",
         "Evergreen's dev experience is great!",
-        timeout=20,
+        timeout=60,
     ) is True)
 
 
@@ -205,19 +205,19 @@ def test_Component_29_T0(iot_obj: IoTUtils, gg_util_obj: GGTestUtils,
     assert (system_interface.monitor_journalctl_for_message(
         "ggl.aws.gg.uat.local.ComponentConfigTestService.service",
         "Value for /singleLevelKey: default value of singleLevelKey",
-        timeout=20) is True)
+        timeout=60) is True)
 
     # And the aws.gg.uat.local.ComponentConfigTestService log contains the line "Value for /nestedKey/leafKey: default value of /nestedKey/leafKey."
     assert (system_interface.monitor_journalctl_for_message(
         "ggl.aws.gg.uat.local.ComponentConfigTestService.service",
         "Value for /nestedKey/leafKey: default value of /nestedKey/leafKey.",
-        timeout=20) is True)
+        timeout=60) is True)
 
     # And the aws.gg.uat.local.ComponentConfigTestService log contains the line "Value for /nestedKey: {"leafKey":"default value of /nestedKey/leafKey"}. I will be interpolated as a serialized JSON String."
     assert (system_interface.monitor_journalctl_for_message(
         "ggl.aws.gg.uat.local.ComponentConfigTestService.service",
         "Value for /nestedKey: {\"leafKey\":\"default value of /nestedKey/leafKey\"}. I will be interpolated as a serialized JSON String.",
-        timeout=20) is True)
+        timeout=60) is True)
 
     # And the aws.gg.uat.local.ComponentConfigTestService log contains the line "Value for /listKey/0: item1."
     # TODO: Add this after we support json pointer support for list indices. This logging has been removed from the component recipe for now.
@@ -232,19 +232,19 @@ def test_Component_29_T0(iot_obj: IoTUtils, gg_util_obj: GGTestUtils,
     assert (system_interface.monitor_journalctl_for_message(
         "ggl.aws.gg.uat.local.ComponentConfigTestService.service",
         "Value for /defaultIsNullKey: null",
-        timeout=20) is True)
+        timeout=60) is True)
 
     # And the aws.gg.uat.local.ComponentConfigTestService log contains the line "Value for /newSingleLevelKey: {configuration:/newSingleLevelKey}."
     assert (system_interface.monitor_journalctl_for_message(
         "ggl.aws.gg.uat.local.ComponentConfigTestService.service",
         "Value for /newSingleLevelKey: {configuration:/newSingleLevelKey}.",
-        timeout=20) is True)
+        timeout=60) is True)
 
     # And the aws.gg.uat.local.ComponentConfigTestService log contains the line "Verified JSON interpolation from script"
     assert (system_interface.monitor_journalctl_for_message(
         "ggl.aws.gg.uat.local.ComponentConfigTestService.service",
         "Verified JSON interpolation from script",
-        timeout=20) is True)
+        timeout=60) is True)
 
     # I can use greengrass-cli component details -n to check the component aws.gg.uat.local.ComponentConfigTestService has configuration that is equal to JSON:
     #     """

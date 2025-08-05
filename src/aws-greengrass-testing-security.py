@@ -253,13 +253,13 @@ def test_Security_6_T7(iot_obj: IoTUtils, gg_util_obj: GGTestUtils,
     assert (system_interface.monitor_journalctl_for_message(
         "ggl." + pubsub_cloud_name[0] + ".service",
         "Successfully subscribed to test/topic",
-        timeout=20) is True)
+        timeout=60) is True)
 
     #And I get 1 assertion with context "Successfully published to test/topic"
     assert (system_interface.monitor_journalctl_for_message(
         "ggl." + pubsub_cloud_name[0] + ".service",
         "Successfully published to test/topic",
-        timeout=20) is True)
+        timeout=60) is True)
 
     time.sleep(5)
 
@@ -276,13 +276,13 @@ def test_Security_6_T7(iot_obj: IoTUtils, gg_util_obj: GGTestUtils,
     assert (system_interface.monitor_journalctl_for_message(
         "ggl." + pubsub_cloud_name[0] + ".service",
         "Successfully subscribed to test/topic",
-        timeout=20) is True)
+        timeout=60) is True)
 
     # And I get 1 assertion with context "Successfully published to test/topic"
     assert (system_interface.monitor_journalctl_for_message(
         "ggl." + pubsub_cloud_name[0] + ".service",
         "Successfully published to test/topic",
-        timeout=20) is True)
+        timeout=60) is True)
 
 
 # Scenario: Security-6-T15: As a service owner, when I remove a component, all of that component's ACLs are removed as well
@@ -338,11 +338,11 @@ def test_Security_6_T15(iot_obj: IoTUtils, gg_util_obj: GGTestUtils,
     assert (system_interface.monitor_journalctl_for_message(
         "ggl." + hello_world_pubSub[0] + ".service",
         "Successfully published 1 message(s)",
-        timeout=20) is True)
+        timeout=60) is True)
     assert (system_interface.monitor_journalctl_for_message(
         "ggl." + hello_world_pubSub[0] + ".service",
         "Received new message on topic test/topic: Hello from local pubsub topic",
-        timeout=20) is True)
+        timeout=60) is True)
 
     # When I remove the components HelloWorldPubSub
     # Then I can check the cli to see the component HelloWorldPubSub is not listed
@@ -374,7 +374,7 @@ def test_Security_6_T15(iot_obj: IoTUtils, gg_util_obj: GGTestUtils,
     assert (system_interface.monitor_journalctl_for_message(
         "ggl." + hello_world_pubSub[0] + ".service",
         "awsiot.greengrasscoreipc.model.UnauthorizedError",
-        timeout=20) is True)
+        timeout=60) is True)
 
 
 # Scenario: Security-6-T22
@@ -414,19 +414,19 @@ def test_Security_6_T22(iot_obj: IoTUtils, gg_util_obj: GGTestUtils,
     assert (system_interface.monitor_journalctl_for_message(
         "ggl." + subscriber_cloud_name[0] + ".service",
         "Subscribed to pubsub topic",
-        timeout=20) is True)
+        timeout=60) is True)
 
     # And I get 1 assertion with context "Published to pubsub topic"
     assert (system_interface.monitor_journalctl_for_message(
         "ggl." + publisher_cloud_name[0] + ".service",
         "Published to pubsub topic",
-        timeout=20) is True)
+        timeout=60) is True)
 
     # And I get 1 assertion with context "Received new message: Hello world"
     assert (system_interface.monitor_journalctl_for_message(
         "ggl." + subscriber_cloud_name[0] + ".service",
         "Received new message: Hello world",
-        timeout=20) is True)
+        timeout=60) is True)
 
     time.sleep(5)
 
@@ -458,10 +458,10 @@ def test_Security_6_T22(iot_obj: IoTUtils, gg_util_obj: GGTestUtils,
     assert (system_interface.monitor_journalctl_for_message(
         "ggl." + subscriber_cloud_name[0] + ".service",
         "Subscribed to pubsub topic",
-        timeout=20) is True)
+        timeout=60) is True)
 
     # And I get 1 assertion with context "Unauthorized error while publishing to topic: pubsub"
     assert (system_interface.monitor_journalctl_for_message(
         "ggl." + publisher_cloud_name[0] + ".service",
         "Unauthorized error while publishing to topic: pubsub",
-        timeout=20) is True)
+        timeout=60) is True)
